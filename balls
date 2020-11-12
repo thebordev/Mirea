@@ -1,0 +1,41 @@
+//Из урны с 10 пронумерованными шариками вынимают по одному шарику. Подсчитать общее
+//количество ситуаций, когда номер хотя бы одного вынутого шарика совпадает с порядковым
+//номером действия "вынимания", например, когда шарик № 3 будет вынут 3-им по порядку.
+
+#include <iostream>
+
+using namespace std;
+unsigned short int N = 10;
+
+unsigned factorial(unsigned n)
+{
+    return ((n > 1) ? n * factorial(n - 1) : n);
+}
+
+unsigned transfers(bool select[], unsigned n, unsigned step = 0)
+{
+    unsigned count = 0;
+    if (step >= n)
+    {
+        count = 1;
+    }
+    else
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if ((i != step) && !select[i])
+            {
+                select[i] = true;
+                count += transfers(select, n, step + 1);
+                select[i] = false;
+            }
+        }
+    }
+    return count;
+}
+
+int main()
+{
+    bool select[N];
+    cout << factorial(N) - transfers(select, N) << endl;
+}
